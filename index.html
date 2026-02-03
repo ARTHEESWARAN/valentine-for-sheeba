@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>For Sheeba 💝</title>
+
+  <!-- Social/link preview -->
+  <meta property="og:title" content="For Sheeba 💝">
+  <meta property="og:description" content="A tiny surprise… open me 😊">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzd5YTBncTk3ejEyNHpiZWxsYzVmMDFvN3R0ZDJmYXU1cTFzaXYxYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oEhn2i7R3QgHnMbSM/giphy.gif">
+  <meta name="theme-color" content="#d4af37">
+
+  <style>
+    :root {
+      /* Theme: blush pink + gold */
+      --bg: #fff0f5;           /* blush backdrop */
+      --bg2: #ffe6ef;
+      --card: #ffffffcc;
+      --text: #3b0c2e;         /* deep plum */
+      --accent: #efb8c8;       /* blush accent */
+      --accent-2: #ff8fb3;
+      --gold: #d4af37;
+      --gold-dark: #b8912b;
+      --no: #be2346;           /* rosy crimson */
+      --no-dark: #9e1b39;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: radial-gradient(1200px 600px at 70% -10%, var(--bg2) 0%, var(--bg) 45%, #ffeaf3 100%);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+    }
+
+    .wrap {
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Floating background hearts */
+    .hearts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .heart {
+      position: absolute; opacity: .15; color: var(--accent);
+      animation: floatUp linear infinite; font-size: 18px;
+      filter: drop-shadow(0 2px 2px #ff4f8a55);
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(100%) scale(0.8) rotate(0deg); }
+      100% { transform: translateY(-120%) scale(1.2) rotate(15deg); }
+    }
+
+    .card {
+      width: min(680px, 92vw);
+      background: var(--card);
+      backdrop-filter: blur(6px);
+      border-radius: 22px;
+      border: 2px solid #f7e5ef;
+      box-shadow: 0 16px 40px #d4af371a, 0 2px 10px #00000015;
+      padding: 28px 22px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(22px, 2.5vw + 14px, 32px);
+      line-height: 1.2;
+    }
+    .lead { margin: 0 0 18px; opacity: .9; }
+
+    .ribbon {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(90deg, var(--gold), #f6cf59, var(--gold));
+      color: #3a2b00; font-weight: 700; padding: 6px 12px;
+      border-radius: 999px; font-size: 13px;
+      box-shadow: 0 4px 14px #d4af3750;
+    }
+
+    .question-box {
+      margin-top: 12px; background: #fff; border: 1px solid #ffd1e1;
+      border-radius: 18px; padding: 18px; position: relative;
+      min-height: 160px; overflow: hidden;
+    }
+
+    .q-text {
+      font-size: clamp(18px, 2vw + 10px, 24px);
+      margin: 0 0 18px; font-weight: 700;
+    }
+
+    .actions { position: relative; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+    button {
+      border: 0; border-radius: 999px; padding: 12px 20px;
+      font-size: 16px; font-weight: 700; color: #3a2b00;
+      cursor: pointer; transition: transform .08s ease, background .12s ease, box-shadow .12s ease;
+      user-select: none;
+    }
+    button:active { transform: translateY(1px) scale(0.98); }
+
+    .btn-yes {
+      background: linear-gradient(180deg, var(--gold), #f3c94e);
+      box-shadow: 0 6px 18px #d4af3733;
+      color: #3a2b00;
+    }
+    .btn-yes:hover { background: linear-gradient(180deg, var(--gold-dark), #e5bb3f); }
+
+    .btn-no {
+      background: linear-gradient(180deg, var(--no), #e04668);
+      color: #fff;
+      box-shadow: 0 6px 18px #be234620;
+      position: relative;
+    }
+    .btn-no:hover { background: linear-gradient(180deg, var(--no-dark), #c73b59); }
+
+    /* Runaway No on final question */
+    .runaway { position: absolute; left: 12px; top: 56px; will-change: left, top, transform; touch-action: none; }
+
+    /* Success state */
+    .result { display: none; text-align: center; padding: 8px 8px 18px; }
+    .result.show { display: block; }
+    .gif {
+      display: inline-block; margin-top: 10px; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 8px 22px #ff4f8a33; max-width: min(420px, 92vw);
+    }
+
+    /* Confetti hearts burst */
+    .confetti { position: fixed; inset: 0; pointer-events: none; }
+    .flake {
+      position: absolute; font-size: 20px; animation: burst 1200ms ease-out forwards;
+      text-shadow: 0 2px 6px #00000015;
+    }
+    @keyframes burst {
+      0% { transform: translate(0,0) scale(0); opacity: 1; }
+      70% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1); opacity: 1; }
+      100%{ transform: translate(calc(var(--tx)*1.1), calc(var(--ty)*1.1)) rotate(var(--rot)) scale(0.9); opacity: 0; }
+    }
+
+    .tiny { font-size: 13px; opacity: .75; margin-top: 12px; }
+    .footer { margin-top: 12px; font-size: 12px; opacity: .6; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hearts" id="bgHearts" aria-hidden="true"></div>
+
+    <div class="card" aria-live="polite">
+      <div class="ribbon">💝 For Sheeba</div>
+      <h1>Hey Sheeba,</h1>
+      <p class="lead">I have a tiny surprise for you. Just a few quick questions…</p>
+
+      <div class="question-box" id="qBox">
+        <div class="q-text" id="qText">Loading…</div>
+        <div class="actions" id="actions">
+          <button class="btn-yes" id="btnYes">Yes</button>
+          <button class="btn-no"  id="btnNo">No</button>
+        </div>
+      </div>
+
+      <div class="result" id="result">
+        <h2>Yay! You made the best decision 💘</h2>
+        <p>Can’t wait to be your Valentine, Sheeba! 🥰</p>
+        <img class="gif" alt="Happy cute GIF" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzd5YTBncTk3ejEyNHpiZWxsYzVmMDFvN3R0ZDJmYXU1cTFzaXYxYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oEhn2i7R3QgHnMbSM/giphy.gif" />
+        <div class="tiny">P.S. Chocolates and a big hug are on the way 🍫🤗</div>
+        <div class="footer">Made with blush &amp; gold ✨</div>
+      </div>
+    </div>
+
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+  </div>
+
+  <script>
+    // ---------- Config ----------
+    const questions = [
+      "Do you like sweet surprises, Sheeba? ✨",
+      "Do you prefer coffee dates or dessert dates? (Both counts as Yes 😉)",
+      "Do you smile when you think of us? 😊",
+      "Will you be my Valentine? 💖"
+    ];
+
+    const qText = document.getElementById('qText');
+    const btnYes = document.getElementById('btnYes');
+    const btnNo  = document.getElementById('btnNo');
+    const qBox   = document.getElementById('qBox');
+    const result = document.getElementById('result');
+    const confetti = document.getElementById('confetti');
+
+    let idx = 0;
+    const finalIndex = questions.length - 1;
+    let isFinal = false;
+
+    function renderQuestion() {
+      qText.textContent = questions[idx];
+      isFinal = idx === finalIndex;
+
+      btnNo.classList.remove('runaway');
+      btnNo.style.left = '';
+      btnNo.style.top = '';
+      btnNo.style.transform = '';
+      btnNo.style.position = isFinal ? 'absolute' : 'relative';
+
+      if (isFinal) btnNo.classList.add('runaway');
+    }
+
+    function nextQuestion() {
+      if (idx < finalIndex) {
+        idx++;
+        renderQuestion();
+      } else {
+        showSuccess();
+      }
+    }
+
+    btnYes.addEventListener('click', nextQuestion);
+
+    // Move the "No" button away on the final question
+    function moveNoAway(pointerX, pointerY) {
+      const bounds = qBox.getBoundingClientRect();
+      const noRect = btnNo.getBoundingClientRect();
+      const padding = 10;
+
+      const maxLeft = Math.max(padding, bounds.width - noRect.width - padding);
+      const maxTop  = Math.max(padding, bounds.height - noRect.height - padding);
+
+      let left = Math.random() * maxLeft;
+      let top  = Math.random() * maxTop;
+
+      if (pointerX !== undefined && pointerY !== undefined) {
+        const relX = pointerX - bounds.left;
+        const relY = pointerY - bounds.top;
+        const awayX = (relX < bounds.width / 2) ? maxLeft : padding;
+        const awayY = (relY < bounds.height / 2) ? maxTop  : padding;
+        left = (left + awayX) / 2;
+        top  = (top  + awayY) / 2;
+      }
+
+      btnNo.style.left = `${left}px`;
+      btnNo.style.top  = `${top}px`;
+    }
+
+    btnNo.addEventListener('click', (e) => {
+      if (!isFinal) {
+        nextQuestion(); // playful skip
+      } else {
+        moveNoAway(e.clientX, e.clientY); // dodge!
+      }
+    });
+
+    function dodge(e) { if (isFinal) moveNoAway(e.clientX, e.clientY); }
+    btnNo.addEventListener('mouseover', dodge);
+    btnNo.addEventListener('focus', dodge);
+
+    // Touch: move when finger gets near
+    qBox.addEventListener('touchstart', (e) => {
+      if (!isFinal) return;
+      const t = e.touches[0];
+      moveNoAway(t.clientX, t.clientY);
+    }, {passive:true});
+
+    function showSuccess() {
+      qBox.style.display = 'none';
+      result.classList.add('show');
+      burstHearts(70);
+    }
+
+    // Confetti hearts
+    function burstHearts(count = 50) {
+      for (let i = 0; i < count; i++) {
+        const span = document.createElement('span');
+        span.className = 'flake';
+        span.textContent = Math.random() < 0.33 ? '💖' : (Math.random() < 0.5 ? '💘' : '💝');
+        span.style.left = (50 + (Math.random() * 8 - 4)) + 'vw';
+        span.style.top = (42 + (Math.random() * 6 - 3)) + 'vh';
+        span.style.setProperty('--tx', (Math.random() * 220 - 110) + 'px');
+        span.style.setProperty('--ty', (Math.random() * 180 - 110) + 'px');
+        span.style.setProperty('--rot', (Math.random() * 240 - 120) + 'deg');
+        confetti.appendChild(span);
+        setTimeout(() => confetti.removeChild(span), 1400);
+      }
+    }
+
+    // Floating background hearts
+    (function initBackgroundHearts(){
+      const bg = document.getElementById('bgHearts');
+      const W = window.innerWidth;
+      const N = Math.min(24, Math.max(12, Math.floor(W / 90)));
+      for (let i=0;i<N;i++) {
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.textContent = '❤';
+        h.style.left = Math.random()*100 + '%';
+        h.style.animationDuration = (8 + Math.random()*8) + 's';
+        h.style.animationDelay = (Math.random()*8) + 's';
+        h.style.fontSize = (16 + Math.random()*24) + 'px';
+        bg.appendChild(h);
+      }
+    })();
+
+    // Init
+    renderQuestion();
+  </script>
+</body>
+</html>
